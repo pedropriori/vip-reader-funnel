@@ -126,18 +126,18 @@ const UpsellLanding = () => {
               <span className="text-center leading-tight sm:leading-relaxed break-words relative z-10">SIM, EU QUERO O MODO VIP AGORA</span>
 
               <style jsx>{`
-                @keyframes gradientShift {
-                  0% {
-                    background-position: 0% 50%;
-                  }
-                  50% {
-                    background-position: 100% 50%;
-                  }
-                  100% {
-                    background-position: 0% 50%;
-                  }
-                }
-              `}</style>
+                 @keyframes gradientShift {
+                   0% {
+                     background-position: 0% 50%;
+                   }
+                   50% {
+                     background-position: 100% 50%;
+                   }
+                   100% {
+                     background-position: 0% 50%;
+                   }
+                 }
+               `}</style>
             </Button>
           </div>
         </div>
@@ -470,23 +470,26 @@ const UpsellLanding = () => {
                   backgroundSize: '300% 300%',
                   animation: 'gradientShift 3s ease infinite'
                 }}
+                onClick={() => {
+                  window.open('https://lastlink.com/p/CAAF99360/checkout-payment/', '_blank');
+                }}
               >
                 <Check className="w-3 h-3 sm:w-5 sm:h-5 mr-2 sm:mr-3 flex-shrink-0 relative z-10" />
                 <span className="text-center leading-tight sm:leading-relaxed break-words relative z-10">SIM, EU QUERO O MODO VIP AGORA</span>
 
                 <style jsx>{`
-                  @keyframes gradientShift {
-                    0% {
-                      background-position: 0% 50%;
-                    }
-                    50% {
-                      background-position: 100% 50%;
-                    }
-                    100% {
-                      background-position: 0% 50%;
-                    }
-                  }
-                `}</style>
+                   @keyframes gradientShift {
+                     0% {
+                       background-position: 0% 50%;
+                     }
+                     50% {
+                       background-position: 100% 50%;
+                     }
+                     100% {
+                       background-position: 0% 50%;
+                     }
+                   }
+                 `}</style>
               </Button>
 
               <div className="text-center">
@@ -499,6 +502,9 @@ const UpsellLanding = () => {
                 variant="decline"
                 size="lg"
                 className="w-full py-4 sm:py-6 px-3 sm:px-4 text-xs sm:text-base leading-tight sm:leading-relaxed min-h-[50px] sm:min-h-[60px]"
+                onClick={() => {
+                  window.open('https://iaproagente.shop/secrethistorys/', '_blank');
+                }}
               >
                 <X className="w-3 h-3 sm:w-4 sm:h-4 mr-2 sm:mr-3 flex-shrink-0" />
                 <span className="text-center leading-tight sm:leading-relaxed break-words">Prefiro continuar lendo as histórias comuns...</span>
