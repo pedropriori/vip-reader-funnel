@@ -7,6 +7,7 @@ import heroImage from '@/assets/hero-romance.jpg';
 
 const UpsellLanding = () => {
   const [timeLeft, setTimeLeft] = useState(15 * 60); // 15 minutos em segundos
+  const [lastLinkReady, setLastLinkReady] = useState(false);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -19,6 +20,55 @@ const UpsellLanding = () => {
     }, 1000);
 
     return () => clearInterval(timer);
+  }, []);
+
+  // Carrega os scripts da LastLink
+  useEffect(() => {
+    const loadLastLinkScripts = () => {
+      // Carrega o script principal da LastLink
+      const script1 = document.createElement('script');
+      script1.src = 'https://cdn.lastlink.com/upsell.min.js';
+      script1.async = true;
+      script1.onload = () => {
+        // Após carregar o script principal, adiciona o script de configuração
+        const script2 = document.createElement('script');
+        script2.textContent = `
+          var upsellRedirect = "https://lastlink.com/app/member/dashboardV2";
+
+          function setupDenyButtons() {
+              document.querySelectorAll('[id^="denyButton"]').forEach(button => {
+                  button.onclick = function() {
+                      const currentUrl = new URL(window.location.href);
+                      const newUrl = new URL("https://lastlink.com/app/member/dashboardV2");
+
+                      currentUrl.searchParams.forEach((value, key) => {
+                          newUrl.searchParams.append(key, value);
+                      });
+
+                      window.location.href = newUrl.toString();
+                  };
+              });
+          }
+
+          if (document.readyState === 'loading') {
+              document.addEventListener('DOMContentLoaded', setupDenyButtons);
+          } else {
+              setupDenyButtons();
+          }
+        `;
+        document.head.appendChild(script2);
+        setLastLinkReady(true);
+
+        // Log para debug
+        console.log('LastLink scripts carregados com sucesso');
+        console.log('Botões disponíveis:', document.querySelectorAll('[id^="llupsell"], [id^="denyButton"]'));
+      };
+      document.head.appendChild(script1);
+    };
+
+    // Aguarda um pouco para garantir que o DOM esteja pronto
+    const timer = setTimeout(loadLastLinkScripts, 1000);
+    return () => clearTimeout(timer);
   }, []);
 
   const formatTime = (seconds: number) => {
@@ -461,58 +511,95 @@ const UpsellLanding = () => {
 
             {/* Action Buttons */}
             <div className="space-y-4">
-              <Button
-                variant="hero"
-                size="xl"
-                className="w-full py-4 sm:py-6 px-3 sm:px-6 text-xs sm:text-base font-bold leading-tight sm:leading-relaxed min-h-[50px] sm:min-h-[60px] relative overflow-hidden"
-                style={{
-                  background: 'linear-gradient(45deg, #ec4899, #be185d, #ec4899, #f472b6, #ec4899)',
-                  backgroundSize: '300% 300%',
-                  animation: 'gradientShift 3s ease infinite'
-                }}
-                onClick={() => {
-                  window.open('https://lastlink.com/p/CAAF99360/checkout-payment/', '_blank');
-                }}
-              >
-                <Check className="w-3 h-3 sm:w-5 sm:h-5 mr-2 sm:mr-3 flex-shrink-0 relative z-10" />
-                <span className="text-center leading-tight sm:leading-relaxed break-words relative z-10">SIM, EU QUERO O MODO VIP AGORA</span>
+              {/* LastLink Buttons */}
+              <div className="flex flex-col items-center gap-6">
+                {/* Botão SIM com texto abaixo */}
+                <div className="flex flex-col items-center gap-3">
+                  <div
+                    className="button-default button-accept w-full max-w-md flex items-center justify-center"
+                    style={{
+                      padding: '17px 32px',
+                      lineHeight: '22px',
+                      borderRadius: '12px',
+                      fontWeight: '700',
+                      background: 'linear-gradient(45deg, #ec4899, #be185d, #ec4899, #f472b6, #ec4899)',
+                      backgroundSize: '300% 300%',
+                      animation: 'gradientShift 3s ease infinite',
+                      color: 'rgb(255, 255, 255)',
+                      cursor: 'pointer',
+                      transition: 'all 0.3s ease',
+                      border: 'none',
+                      fontSize: '16px',
+                      position: 'relative',
+                      overflow: 'hidden',
+                      textAlign: 'center'
+                    }}
+                    id="llupsell-CAAF99360-1"
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.transform = 'scale(1.02)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.transform = 'scale(1)';
+                    }}
+                  >
+                    <Check className="w-4 h-4 mr-2 flex-shrink-0" />
+                    <span className="text-center">SIM, EU QUERO O MODO VIP AGORA</span>
+                  </div>
 
-                <style jsx>{`
-                   @keyframes gradientShift {
-                     0% {
-                       background-position: 0% 50%;
-                     }
-                     50% {
-                       background-position: 100% 50%;
-                     }
-                     100% {
-                       background-position: 0% 50%;
-                     }
-                   }
-                 `}</style>
-              </Button>
+                  {/* Texto abaixo do botão SIM */}
+                  <p className="text-xs sm:text-sm text-accent font-semibold">
+                    🔒 Acesso vitalício. Garantido.
+                  </p>
+                </div>
 
-              <div className="text-center">
-                <p className="text-xs sm:text-sm text-accent font-semibold mb-3">
-                  🔒 Acesso vitalício. Garantido.
-                </p>
+                {/* Botão NÃO com texto abaixo */}
+                <div className="flex flex-col items-center gap-3">
+                  <div
+                    className="button-default button-deny w-full max-w-md text-center"
+                    style={{
+                      textDecoration: 'underline',
+                      lineHeight: '22px',
+                      fontSize: '16px',
+                      fontWeight: '700',
+                      color: 'rgb(255, 255, 255)',
+                      cursor: 'pointer',
+                      padding: '12px 20px',
+                      transition: 'all 0.3s ease',
+                      borderRadius: '8px',
+                      backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                      border: '1px solid rgba(255, 255, 255, 0.2)'
+                    }}
+                    id="denyButtona32b9ff"
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.2)';
+                      e.currentTarget.style.transform = 'scale(1.02)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+                      e.currentTarget.style.transform = 'scale(1)';
+                    }}
+                  >
+                    <X className="w-4 h-4 mr-2 inline-block" />
+                    Prefiro continuar lendo as histórias comuns...
+                  </div>
+
+                  {/* Texto abaixo do botão NÃO */}
+                  <p className="text-center text-xs sm:text-sm text-muted-foreground px-2">
+                    Sem acesso aos capítulos secretos, sem histórias exclusivas, e sem o clube fechado.
+                  </p>
+                </div>
+
+                {/* CSS para animação do gradiente */}
+                <style dangerouslySetInnerHTML={{
+                  __html: `
+                    @keyframes gradientShift {
+                      0% { background-position: 0% 50%; }
+                      50% { background-position: 100% 50%; }
+                      100% { background-position: 0% 50%; }
+                    }
+                  `
+                }}></style>
               </div>
-
-              <Button
-                variant="decline"
-                size="lg"
-                className="w-full py-4 sm:py-6 px-3 sm:px-4 text-xs sm:text-base leading-tight sm:leading-relaxed min-h-[50px] sm:min-h-[60px]"
-                onClick={() => {
-                  window.open('https://iaproagente.shop/secrethistorys/', '_blank');
-                }}
-              >
-                <X className="w-3 h-3 sm:w-4 sm:h-4 mr-2 sm:mr-3 flex-shrink-0" />
-                <span className="text-center leading-tight sm:leading-relaxed break-words">Prefiro continuar lendo as histórias comuns...</span>
-              </Button>
-
-              <p className="text-center text-xs sm:text-sm text-muted-foreground mt-3 px-2">
-                Sem acesso aos capítulos secretos, sem histórias exclusivas, e sem o clube fechado.
-              </p>
             </div>
           </Card>
         </div>
