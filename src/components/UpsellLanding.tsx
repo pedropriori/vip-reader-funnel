@@ -210,17 +210,31 @@ const UpsellLanding = () => {
           {/* VSL Area */}
           <div className="w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl mx-auto mb-16">
             <div className="bg-gradient-card rounded-xl border border-border p-3 sm:p-4 shadow-romantic">
-              {/* Wistia iframe */}
-              <div className="relative w-full rounded-lg overflow-hidden" style={{ paddingTop: '177.78%' }}>
-                <iframe
-                  src="https://fast.wistia.com/embed/iframe/mkkqzqrm4g?seo=false&videoFoam=true"
-                  title="VSL - Video Sales Letter"
-                  className="absolute top-0 left-0 w-full h-full rounded-lg"
-                  allow="autoplay; fullscreen"
-                  allowFullScreen
-                  style={{ border: 'none' }}
-                ></iframe>
-              </div>
+              {language === 'es' ? (
+                /* VSL em Espanhol */
+                <div className="relative w-full rounded-lg overflow-hidden" style={{ paddingTop: '177.78%' }}>
+                  <iframe
+                    src="https://fast.wistia.com/embed/iframe/efqzpu5zib?seo=false&videoFoam=true"
+                    title="VSL - Video Sales Letter (Español)"
+                    className="absolute top-0 left-0 w-full h-full rounded-lg"
+                    allow="autoplay; fullscreen"
+                    allowFullScreen
+                    style={{ border: 'none' }}
+                  ></iframe>
+                </div>
+              ) : (
+                /* VSL em Português */
+                <div className="relative w-full rounded-lg overflow-hidden" style={{ paddingTop: '177.78%' }}>
+                  <iframe
+                    src="https://fast.wistia.com/embed/iframe/mkkqzqrm4g?seo=false&videoFoam=true"
+                    title="VSL - Video Sales Letter"
+                    className="absolute top-0 left-0 w-full h-full rounded-lg"
+                    allow="autoplay; fullscreen"
+                    allowFullScreen
+                    style={{ border: 'none' }}
+                  ></iframe>
+                </div>
+              )}
             </div>
           </div>
 
